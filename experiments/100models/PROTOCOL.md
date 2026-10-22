@@ -13,6 +13,14 @@ Oyama, Yamagiwa, Takase, Shimodaira (ACL 2025), “Mapping 1,000+ Language Model
 
 ## 比較条件
 
+### 数値エラーからの再開
+
+初回のFP16実行では66モデルが完了し、25モデルで非有限の尤度、9モデルで1トークンの入力を拒否するチェックの失敗が発生した。確認したPythia-70mでは重みに非有限値はなく、FP16推論でNaN、FP32推論で有限値となった。非有限値で失敗した25モデルは、グラフ特徴と両方の尤度をFP32で計算し直す。途中までのFP16特徴は別ディレクトリに保存し、FP32特徴と混ぜない。完了済みの66モデルは保持する。
+
+したがって、以降の100モデル結果は「既定FP16、一部モデルはFP32で安定化」の条件であり、全モデルが原論文と同じFP16精度という意味での再現ではない。モデルごとの実際のdtypeを`complete.json`、例外一覧を`config.json`の`dtype_overrides`と`numerical_recovery.json`に記録する。精度による交絡を確認する際は、FP16で完了したモデルのみの部分集合も区別する。
+
+既定トークナイズで1トークンになる入力の著者方式の対数尤度は、次トークン項がないため空和の0となる。この場合も入力テキストを変更せず、著者コードの定義に従う。手動BOS条件ではBOSからその1トークンを予測するため、両条件は区別される。
+
 | 条件 | 特徴・距離 | 目的 |
 |---|---|---|
 | Shimodaira L raw | 既定トークナイズによる文書の対数尤度ベクトル | 平均尤度も含む対照 |
@@ -27,7 +35,7 @@ Oyama, Yamagiwa, Takase, Shimodaira (ACL 2025), “Mapping 1,000+ Language Model
 `L[i,s] = log p_i(x_s)`、`Q = L - rowmean(L) - colmean(L) + mean(L)`。
 `D_Q[i,j] = ||Q_i-Q_j||/sqrt(N)`、`KL_approx = D_Q**2/2`を別ファイルで保存する。二乗KL近似自体を距離として次元削減には渡さない。Qの距離はモデル行の平均を引いた対数尤度差の標準偏差に一致する。
 
-著者コードに合わせ、尤度はfloat16モデルの`log_softmax`をPython float相当のfloat64で累積する。`tokenizer.encode(..., add_special_tokens=True)`を用い、手動BOSは追加しない。グラフ入力は前実験と同じ明示BOS条件とし、この差をuniform-BOS尤度条件で監査する。モデル推論dtypeは全条件float16に固定し、以前のbfloat16結果と混ぜない。
+著者コードに合わせ、尤度はfloat16モデルの`log_softmax`をPython float相当のfloat64で累積する。`tokenizer.encode(..., add_special_tokens=True)`を用い、手動BOSは追加しない。グラフ入力は前実験と同じ明示BOS条件とし、この差をuniform-BOS尤度条件で監査する。既定のモデル推論dtypeはfloat16とし、上記の数値エラーが出た25モデルでは両手法をfloat32にそろえる。以前のbfloat16結果は混ぜない。
 
 重みがPyTorch形式のみのモデルも含むため、100モデル実験にはPyTorch 2.6.0の専用環境を用いる。既存の15モデル実験の環境は変更しない。実行時の依存ライブラリのバージョンは`execution_environment.json`に保存する。
 

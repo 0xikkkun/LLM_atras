@@ -4,6 +4,7 @@ from pathlib import Path
 p=argparse.ArgumentParser();p.add_argument('--output',required=True,type=Path);a=p.parse_args();out=a.output/'main/analysis';ev=out/'evaluation'
 def rows(name):return list(csv.DictReader((ev/name).open()))
 config=json.loads((a.output/'config.json').read_text());done=json.loads((out/'complete.json').read_text())
+overrides=config.get('dtype_overrides',{})
 lines=['# 100モデル対照実験の結果','',f"モデル {done['models']}、共通テキスト {done['texts']}。距離 {len(done['methods'])} 条件。次元削減 {done['map_runs']} 回。",'', '共通300テキストでの手法追試。原論文の1,018モデル・10,000テキストの完全再現ではない。', '',f"以前の15モデル実験からprefixが変わったテキスト: {config['texts_changed_from_15_model_run']} 件。推論dtype: {config['dtype']}。",'','## モデル内グラフ','', '| 重み | 同分野の近傍10件の割合 | 分野シルエット |','|---|---:|---:|']
 g=rows('internal_graph_quality.csv')
 for w in ['euclidean','fisher']:

@@ -154,6 +154,7 @@ def extract(stage, idx):
     torch.manual_seed(20261022)
     entry = json.loads((ROOT/'models.json').read_text())[idx]
     config = json.loads((ROOT/'config.json').read_text())
+    inference_dtype = config.get('dtype_overrides', {}).get(entry['id'], config.get('dtype', 'bfloat16'))
     capture_reference = config.get('capture_reference_likelihood', False)
     rows = json.loads((ROOT/f'texts_{stage}.json').read_text())
     dest = ROOT/stage/'features'/slug(entry['id'])
@@ -172,7 +173,7 @@ def extract(stage, idx):
         print('STAGED', entry['id'], flush=True)
     tok = AutoTokenizer.from_pretrained(load_path, local_files_only=True)
     model = AutoModelForCausalLM.from_pretrained(load_path,
-        local_files_only=True, dtype=getattr(torch, config.get('dtype', 'bfloat16')),
+        local_files_only=True, dtype=getattr(torch, inference_dtype),
         attn_implementation='eager').to('cuda').eval()
     model.config.use_cache = False
     eta, hidden, ll, ess, lengths, ll_reference = [], [], [], [], [], []
@@ -202,7 +203,8 @@ def extract(stage, idx):
             if capture_reference:
                 # Follow the official calculator's default tokenizer special tokens.
                 ref_ids = tok.encode(row['text'], add_special_tokens=True)
-                assert 2 <= len(ref_ids) <= 512
+                # The author's shifted-token sum is zero for one-token sequences.
+                assert 1 <= len(ref_ids) <= 512
                 ref_ids = torch.tensor([ref_ids], device='cuda')
                 ref_out = out if torch.equal(ids, ref_ids) else model(
                     input_ids=ref_ids, output_hidden_states=False, output_attentions=False)
@@ -248,7 +250,7 @@ def extract(stage, idx):
         pca_projection=P, pca_mean=pca.mean_, pca_evr=pca.explained_variance_ratio_, regularization=regs,
         **extra_features)
     dump(dest/'complete.json', dict(**entry,n=len(rows), seconds=time.time()-start,
-        torch_version=torch.__version__, dtype=config.get('dtype', 'bfloat16'),
+        torch_version=torch.__version__, dtype=inference_dtype,
         reference_likelihood=capture_reference,
         min_metric_eigenvalue=min(eigmin), max_covariance_condition=max(conditions),
         ess_min=min(ess),ess_median=float(np.median(ess)), pca_evr=float(pca.explained_variance_ratio_.sum())))
