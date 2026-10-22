@@ -1,0 +1,26 @@
+[
+  {
+    "id": "gpt2",
+    "official_code_sha256": "b6ee15b4a395e3584bfdb56e1e4ea7ee3d2924a70771112cdf30c90d6ba45630",
+    "value_max_abs_error": 0.0,
+    "reference_likelihood_abs_error": 0.0,
+    "default_tokens": 404,
+    "uniform_bos_tokens": 405
+  },
+  {
+    "id": "EleutherAI/pythia-160m",
+    "official_code_sha256": "b6ee15b4a395e3584bfdb56e1e4ea7ee3d2924a70771112cdf30c90d6ba45630",
+    "value_max_abs_error": 0.0,
+    "reference_likelihood_abs_error": 0.0,
+    "default_tokens": 389,
+    "uniform_bos_tokens": 390
+  },
+  {
+    "id": "Qwen/Qwen2.5-0.5B",
+    "official_code_sha256": "b6ee15b4a395e3584bfdb56e1e4ea7ee3d2924a70771112cdf30c90d6ba45630",
+    "value_max_abs_error": 0.0,
+    "reference_likelihood_abs_error": 0.0,
+    "default_tokens": 399,
+    "uniform_bos_tokens": 400
+  }
+]

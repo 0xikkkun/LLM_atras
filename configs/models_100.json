@@ -1,0 +1,710 @@
+{
+  "models": [
+    {
+      "id": "distilgpt2",
+      "family": "GPT2",
+      "role": "unspecified",
+      "revision": "2290a62682d06624634c1f46a6ad5be0f47f38aa",
+      "model_type": "gpt2"
+    },
+    {
+      "id": "gpt2",
+      "family": "GPT2",
+      "role": "unspecified",
+      "revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+      "model_type": "gpt2"
+    },
+    {
+      "id": "gpt2-medium",
+      "family": "GPT2",
+      "role": "unspecified",
+      "revision": "6dcaa7a952f72f9298047fd5137cd6e4f05f41da",
+      "model_type": "gpt2"
+    },
+    {
+      "id": "gpt2-large",
+      "family": "GPT2",
+      "role": "unspecified",
+      "revision": "32b71b12589c2f8d625668d2335a01cac3249519",
+      "model_type": "gpt2"
+    },
+    {
+      "id": "gpt2-xl",
+      "family": "GPT2",
+      "role": "unspecified",
+      "revision": "15ea56dee5df4983c59b2538573817e1667135e2",
+      "model_type": "gpt2"
+    },
+    {
+      "id": "NousResearch/Llama-2-7b-hf",
+      "family": "Llama2",
+      "role": "unspecified",
+      "revision": "8efe6c9b93655b934e27bd9981e3ec13e55aee9d",
+      "model_type": "llama"
+    },
+    {
+      "id": "NousResearch/Llama-2-7b-chat-hf",
+      "family": "Llama2",
+      "role": "unspecified",
+      "revision": "351844e75ed0bcbbe3f10671b3c808d2b83894ee",
+      "model_type": "llama"
+    },
+    {
+      "id": "NousResearch/Meta-Llama-3-8B",
+      "family": "Llama3",
+      "role": "unspecified",
+      "revision": "315b20096dc791d381d514deb5f8bd9c8d6d3061",
+      "model_type": "llama"
+    },
+    {
+      "id": "NousResearch/Meta-Llama-3-8B-Instruct",
+      "family": "Llama3",
+      "role": "unspecified",
+      "revision": "53346005fb0ef11d3b6a83b12c895cca40156b6c",
+      "model_type": "llama"
+    },
+    {
+      "id": "NousResearch/Meta-Llama-3.1-8B",
+      "family": "Llama3.1",
+      "role": "unspecified",
+      "revision": "1f47e50cdbe801ad8a5174156ec3a0655108fb9f",
+      "model_type": "llama"
+    },
+    {
+      "id": "NousResearch/Meta-Llama-3.1-8B-Instruct",
+      "family": "Llama3.1",
+      "role": "unspecified",
+      "revision": "d10aef7999a2b5ba950ab3974312feeedbfe0b77",
+      "model_type": "llama"
+    },
+    {
+      "id": "mistralai/Mistral-7B-v0.1",
+      "family": "Mistral",
+      "role": "unspecified",
+      "revision": "27d67f1b5f57dc0953326b2601d68371d40ea8da",
+      "model_type": "mistral"
+    },
+    {
+      "id": "mistralai/Mistral-7B-Instruct-v0.1",
+      "family": "Mistral",
+      "role": "unspecified",
+      "revision": "ec5deb64f2c6e6fa90c1abf74a91d5c93a9669ca",
+      "model_type": "mistral"
+    },
+    {
+      "id": "mistralai/Mistral-7B-v0.3",
+      "family": "Mistral",
+      "role": "unspecified",
+      "revision": "caa1feb0e54d415e2df31207e5f4e273e33509b1",
+      "model_type": "mistral"
+    },
+    {
+      "id": "mistralai/Mistral-7B-Instruct-v0.3",
+      "family": "Mistral",
+      "role": "unspecified",
+      "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71",
+      "model_type": "mistral"
+    },
+    {
+      "id": "EleutherAI/pythia-160m",
+      "family": "Pythia",
+      "role": "unspecified",
+      "revision": "0cf035e7d55e9b2fbec7f2db0c0c32670146b9b1",
+      "model_type": "gpt_neox"
+    },
+    {
+      "id": "EleutherAI/pythia-1.4b",
+      "family": "Pythia",
+      "role": "unspecified",
+      "revision": "9cc5c8c8148a4e0115d9e29c6b4f21124cfe748a",
+      "model_type": "gpt_neox"
+    },
+    {
+      "id": "EleutherAI/pythia-410m",
+      "family": "Pythia",
+      "role": "unspecified",
+      "revision": "1091939841611a37efe2bdfdf2bfd4f7778b0b0c",
+      "model_type": "gpt_neox"
+    },
+    {
+      "id": "EleutherAI/pythia-70m",
+      "family": "Pythia",
+      "role": "unspecified",
+      "revision": "a39f36b100fe8a5377810d56c3f4789b9c53ac42",
+      "model_type": "gpt_neox"
+    },
+    {
+      "id": "HuggingFaceH4/zephyr-7b-alpha",
+      "family": "Mistral",
+      "role": "unspecified",
+      "revision": "014792bbb59d04ced3b5a9b8b4dfc926655d958f",
+      "model_type": "mistral"
+    },
+    {
+      "id": "mistralai/Mistral-7B-Instruct-v0.2",
+      "family": "Mistral",
+      "role": "unspecified",
+      "revision": "63a8b081895390a26e140280378bc85ec8bce07a",
+      "model_type": "mistral"
+    },
+    {
+      "id": "mlabonne/NeuralHermes-2.5-Mistral-7B",
+      "family": "Mistral",
+      "role": "unspecified",
+      "revision": "6f2b949fbb84997e62db9aef4f05f84b95344c90",
+      "model_type": "mistral"
+    },
+    {
+      "id": "NousResearch/Hermes-3-Llama-3.1-8B",
+      "family": "Llama3.1",
+      "role": "unspecified",
+      "revision": "896ea440e5a9e6070e3d8a2774daf2b481ab425b",
+      "model_type": "llama"
+    },
+    {
+      "id": "huggyllama/llama-7b",
+      "family": "Llama1",
+      "role": "unspecified",
+      "revision": "4782ad278652c7c71b72204d462d6d01eaaf7549",
+      "model_type": "llama"
+    },
+    {
+      "id": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "family": "TinyLlama",
+      "role": "unspecified",
+      "revision": "fe8a4ea1ffedaf415f4da2f062534de366a451e6",
+      "model_type": "llama"
+    },
+    {
+      "id": "codellama/CodeLlama-7b-hf",
+      "family": "CodeLlama",
+      "role": "unspecified",
+      "revision": "6c284d1468fe6c413cf56183e69b194dcfa27fe6",
+      "model_type": "llama"
+    },
+    {
+      "id": "NousResearch/Nous-Hermes-llama-2-7b",
+      "family": "Llama2",
+      "role": "unspecified",
+      "revision": "cbd525ad0d5012e470c7696d5905345dc082e432",
+      "model_type": "llama"
+    },
+    {
+      "id": "NousResearch/Llama-2-13b-chat-hf",
+      "family": "Llama2",
+      "role": "unspecified",
+      "revision": "d73f5fa9c4bc135502e04c27b39660747172d76b",
+      "model_type": "llama"
+    },
+    {
+      "id": "openchat/openchat-3.5-0106",
+      "family": "Mistral",
+      "role": "unspecified",
+      "revision": "ff058fda49726ecf4ea53dc1635f917cdb8ba36b",
+      "model_type": "mistral"
+    },
+    {
+      "id": "NousResearch/Nous-Hermes-2-Mistral-7B-DPO",
+      "family": "Mistral",
+      "role": "unspecified",
+      "revision": "ebec0a691037d38955727d6949798429a63929dd",
+      "model_type": "mistral"
+    },
+    {
+      "id": "Nexusflow/Starling-LM-7B-beta",
+      "family": "Mistral",
+      "role": "unspecified",
+      "revision": "39a4d501472dfede947ca5f4c5af0c1896d0361b",
+      "model_type": "mistral"
+    },
+    {
+      "id": "codellama/CodeLlama-7b-Instruct-hf",
+      "family": "CodeLlama",
+      "role": "unspecified",
+      "revision": "22cb240e0292b0b5ab4c17ccd97aa3a2f799cbed",
+      "model_type": "llama"
+    },
+    {
+      "id": "cognitivecomputations/dolphin-2.6-mistral-7b",
+      "family": "Mistral",
+      "role": "unspecified",
+      "revision": "61981ccfb93bad331c8d3da97aafeb13596afc9d",
+      "model_type": "mistral"
+    },
+    {
+      "id": "codellama/CodeLlama-7b-Python-hf",
+      "family": "CodeLlama",
+      "role": "unspecified",
+      "revision": "d4178f5d2eead875e627ec487b23679266319b7f",
+      "model_type": "llama"
+    },
+    {
+      "id": "Qwen/Qwen2.5-0.5B",
+      "family": "Qwen2.5",
+      "role": "unspecified",
+      "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "NousResearch/Llama-2-13b-hf",
+      "family": "Llama2",
+      "role": "unspecified",
+      "revision": "4b54e9fdd2ebd8db0901d37b98d3a53bbfaa4503",
+      "model_type": "llama"
+    },
+    {
+      "id": "HuggingFaceH4/zephyr-7b-beta",
+      "family": "Mistral",
+      "role": "unspecified",
+      "revision": "892b3d7a7b1cf10c7a701c60881cd93df615734c",
+      "model_type": "mistral"
+    },
+    {
+      "id": "teknium/OpenHermes-2.5-Mistral-7B",
+      "family": "Mistral",
+      "role": "unspecified",
+      "revision": "24c0bea14d53e6f67f1fbe2eca5bfe7cae389b33",
+      "model_type": "mistral"
+    },
+    {
+      "id": "codellama/CodeLlama-13b-hf",
+      "family": "CodeLlama",
+      "role": "unspecified",
+      "revision": "8da65ff4ee20f74ecd107ca9d54f9f121b279860",
+      "model_type": "llama"
+    },
+    {
+      "id": "EleutherAI/pythia-1b",
+      "family": "Pythia",
+      "role": "unspecified",
+      "revision": "f73d7dcc545c8bd326d8559c8ef84ffe92fea6b2",
+      "model_type": "gpt_neox"
+    },
+    {
+      "id": "EleutherAI/pythia-2.8b",
+      "family": "Pythia",
+      "role": "unspecified",
+      "revision": "2a259cdd96a4beb1cdf467512e3904197345f6a9",
+      "model_type": "gpt_neox"
+    },
+    {
+      "id": "EleutherAI/pythia-70m-deduped",
+      "family": "Pythia",
+      "role": "unspecified",
+      "revision": "e93a9faa9c77e5d09219f6c868bfc7a1bd65593c",
+      "model_type": "gpt_neox"
+    },
+    {
+      "id": "EleutherAI/pythia-160m-deduped",
+      "family": "Pythia",
+      "role": "unspecified",
+      "revision": "582159a2dfe3e712a8d47ae83dec95ae3bde8e7e",
+      "model_type": "gpt_neox"
+    },
+    {
+      "id": "EleutherAI/pythia-410m-deduped",
+      "family": "Pythia",
+      "role": "unspecified",
+      "revision": "c4fc8d586d62df497f1f9b69d66d3ca419992d3e",
+      "model_type": "gpt_neox"
+    },
+    {
+      "id": "EleutherAI/pythia-1b-deduped",
+      "family": "Pythia",
+      "role": "unspecified",
+      "revision": "7199d8fc61a6d565cd1f3c62bf11525b563e13b2",
+      "model_type": "gpt_neox"
+    },
+    {
+      "id": "EleutherAI/pythia-1.4b-deduped",
+      "family": "Pythia",
+      "role": "unspecified",
+      "revision": "554d9c1bae3877f740aece41feb90f912cf9fedc",
+      "model_type": "gpt_neox"
+    },
+    {
+      "id": "EleutherAI/pythia-2.8b-deduped",
+      "family": "Pythia",
+      "role": "unspecified",
+      "revision": "7d977fed8c4ce9649816af8cd5fe36a639cbe5b2",
+      "model_type": "gpt_neox"
+    },
+    {
+      "id": "Qwen/Qwen2-0.5B",
+      "family": "Qwen2",
+      "role": "base",
+      "revision": "91d2aff3f957f99e4c74c962f2f408dcc88a18d8",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2-0.5B-Instruct",
+      "family": "Qwen2",
+      "role": "instruct",
+      "revision": "c540970f9e29518b1d8f06ab8b24cba66ad77b6d",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2-1.5B",
+      "family": "Qwen2",
+      "role": "base",
+      "revision": "8a16abf2848eda07cc5253dec660bf1ce007ad7a",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2-1.5B-Instruct",
+      "family": "Qwen2",
+      "role": "instruct",
+      "revision": "ba1cf1846d7df0a0591d6c00649f57e798519da8",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2-7B",
+      "family": "Qwen2",
+      "role": "base",
+      "revision": "453ed1575b739b5b03ce3758b23befdb0967f40e",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2-7B-Instruct",
+      "family": "Qwen2",
+      "role": "instruct",
+      "revision": "f2826a00ceef68f0f2b946d945ecc0477ce4450c",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2.5-0.5B-Instruct",
+      "family": "Qwen2.5",
+      "role": "instruct",
+      "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2.5-1.5B",
+      "family": "Qwen2.5",
+      "role": "base",
+      "revision": "8faed761d45a263340a0528343f099c05c9a4323",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2.5-1.5B-Instruct",
+      "family": "Qwen2.5",
+      "role": "instruct",
+      "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2.5-3B",
+      "family": "Qwen2.5",
+      "role": "base",
+      "revision": "3aab1f1954e9cc14eb9509a215f9e5ca08227a9b",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2.5-3B-Instruct",
+      "family": "Qwen2.5",
+      "role": "instruct",
+      "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2.5-7B",
+      "family": "Qwen2.5",
+      "role": "base",
+      "revision": "d149729398750b98c0af14eb82c78cfe92750796",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2.5-7B-Instruct",
+      "family": "Qwen2.5",
+      "role": "instruct",
+      "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2.5-Coder-0.5B",
+      "family": "Qwen2.5",
+      "role": "coder_base",
+      "revision": "8123ea2e9354afb7ffcc6c8641d1b2f5ecf18301",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2.5-Coder-0.5B-Instruct",
+      "family": "Qwen2.5",
+      "role": "coder_instruct",
+      "revision": "ea3f2471cf1b1f0db85067f1ef93848e38e88c25",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2.5-Coder-1.5B",
+      "family": "Qwen2.5",
+      "role": "coder_base",
+      "revision": "df3ce67c0e24480f20468b6ef2894622d69eb73b",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+      "family": "Qwen2.5",
+      "role": "coder_instruct",
+      "revision": "2e1fd397ee46e1388853d2af2c993145b0f1098a",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2.5-Coder-3B",
+      "family": "Qwen2.5",
+      "role": "coder_base",
+      "revision": "09d9bc5d376b0cfa0100a0694ea7de7232525803",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2.5-Coder-3B-Instruct",
+      "family": "Qwen2.5",
+      "role": "coder_instruct",
+      "revision": "488639f1ff808d1d3d0ba301aef8c11461451ec5",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2.5-Coder-7B",
+      "family": "Qwen2.5",
+      "role": "coder_base",
+      "revision": "0396a76181e127dfc13e5c5ec48a8cee09938b02",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "family": "Qwen2.5",
+      "role": "coder_instruct",
+      "revision": "c03e6d358207e414f1eca0bb1891e29f1db0e242",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2.5-Math-1.5B",
+      "family": "Qwen2.5",
+      "role": "math_base",
+      "revision": "4a83ca6e4526a4f2da3aa259ec36c259f66b2ab2",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2.5-Math-1.5B-Instruct",
+      "family": "Qwen2.5",
+      "role": "math_instruct",
+      "revision": "aafeb0fc6f22cbf0eaeed126eff8be45b0360a35",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2.5-Math-7B",
+      "family": "Qwen2.5",
+      "role": "math_base",
+      "revision": "b101308fe89651ea5ce025f25317fea6fc07e96e",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "Qwen/Qwen2.5-Math-7B-Instruct",
+      "family": "Qwen2.5",
+      "role": "math_instruct",
+      "revision": "ef9926d75ab1d54532f6a30dd5e760355eb9aa4d",
+      "model_type": "qwen2"
+    },
+    {
+      "id": "HuggingFaceTB/SmolLM-135M",
+      "family": "SmolLM",
+      "role": "base",
+      "revision": "1d461723eec654e65efdc40cf49301c89c0c92f4",
+      "model_type": "llama"
+    },
+    {
+      "id": "HuggingFaceTB/SmolLM-135M-Instruct",
+      "family": "SmolLM",
+      "role": "instruct",
+      "revision": "fcc320f490e08fdb4b99d935b2c58d40bf35b0d0",
+      "model_type": "llama"
+    },
+    {
+      "id": "HuggingFaceTB/SmolLM-360M",
+      "family": "SmolLM",
+      "role": "base",
+      "revision": "59f7ef243ee09a72cbc14cb054393a3e3b771d41",
+      "model_type": "llama"
+    },
+    {
+      "id": "HuggingFaceTB/SmolLM-360M-Instruct",
+      "family": "SmolLM",
+      "role": "instruct",
+      "revision": "73b7144f76331266f5f45d5642fd8da653583b13",
+      "model_type": "llama"
+    },
+    {
+      "id": "HuggingFaceTB/SmolLM-1.7B",
+      "family": "SmolLM",
+      "role": "base",
+      "revision": "d7449ff7241c863f3e8accc475155f0f97afa011",
+      "model_type": "llama"
+    },
+    {
+      "id": "HuggingFaceTB/SmolLM-1.7B-Instruct",
+      "family": "SmolLM",
+      "role": "instruct",
+      "revision": "69f49d9c36434d6a3f319dadc5bd3b812752b98b",
+      "model_type": "llama"
+    },
+    {
+      "id": "HuggingFaceTB/SmolLM2-135M",
+      "family": "SmolLM2",
+      "role": "base",
+      "revision": "93efa2f097d58c2a74874c7e644dbc9b0cee75a2",
+      "model_type": "llama"
+    },
+    {
+      "id": "HuggingFaceTB/SmolLM2-135M-Instruct",
+      "family": "SmolLM2",
+      "role": "instruct",
+      "revision": "12fd25f77366fa6b3b4b768ec3050bf629380bac",
+      "model_type": "llama"
+    },
+    {
+      "id": "HuggingFaceTB/SmolLM2-360M",
+      "family": "SmolLM2",
+      "role": "base",
+      "revision": "f8027fd0eaeea54caa13c31d31b9fdc459c38b49",
+      "model_type": "llama"
+    },
+    {
+      "id": "HuggingFaceTB/SmolLM2-360M-Instruct",
+      "family": "SmolLM2",
+      "role": "instruct",
+      "revision": "a10cc1512eabd3dde888204e902eca88bddb4951",
+      "model_type": "llama"
+    },
+    {
+      "id": "HuggingFaceTB/SmolLM2-1.7B",
+      "family": "SmolLM2",
+      "role": "base",
+      "revision": "effd688a12921b4cc83e3312b6feb579f70f9c71",
+      "model_type": "llama"
+    },
+    {
+      "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "family": "SmolLM2",
+      "role": "instruct",
+      "revision": "31b70e2e869a7173562077fd711b654946d38674",
+      "model_type": "llama"
+    },
+    {
+      "id": "TinyLlama/TinyLlama_v1.1",
+      "family": "TinyLlama",
+      "role": "base",
+      "revision": "ff3c701f2424c7625fdefb9dd470f45ef18b02d6",
+      "model_type": "llama"
+    },
+    {
+      "id": "deepseek-ai/deepseek-coder-1.3b-base",
+      "family": "DeepSeek",
+      "role": "unspecified",
+      "revision": "c919139c3a9b4070729c8b2cca4847ab29ca8d94",
+      "model_type": "llama"
+    },
+    {
+      "id": "deepseek-ai/deepseek-coder-1.3b-instruct",
+      "family": "DeepSeek",
+      "role": "unspecified",
+      "revision": "e063262dac8366fc1f28a4da0ff3c50ea66259ca",
+      "model_type": "llama"
+    },
+    {
+      "id": "deepseek-ai/deepseek-coder-6.7b-base",
+      "family": "DeepSeek",
+      "role": "unspecified",
+      "revision": "ce2207a8bfef3ee92bd7dd4cc31c52cfa0046912",
+      "model_type": "llama"
+    },
+    {
+      "id": "deepseek-ai/deepseek-coder-6.7b-instruct",
+      "family": "DeepSeek",
+      "role": "unspecified",
+      "revision": "e5d64addd26a6a1db0f9b863abf6ee3141936807",
+      "model_type": "llama"
+    },
+    {
+      "id": "deepseek-ai/deepseek-llm-7b-base",
+      "family": "DeepSeek",
+      "role": "unspecified",
+      "revision": "7683fea62db869066ddaff6a41d032262c490d4f",
+      "model_type": "llama"
+    },
+    {
+      "id": "deepseek-ai/deepseek-llm-7b-chat",
+      "family": "DeepSeek",
+      "role": "unspecified",
+      "revision": "afbda8b347ec881666061fa67447046fc5164ec8",
+      "model_type": "llama"
+    },
+    {
+      "id": "deepseek-ai/deepseek-math-7b-base",
+      "family": "DeepSeek",
+      "role": "unspecified",
+      "revision": "036a8c6189aac6e2fc4e07b46e1e57c6b647bca5",
+      "model_type": "llama"
+    },
+    {
+      "id": "deepseek-ai/deepseek-math-7b-instruct",
+      "family": "DeepSeek",
+      "role": "unspecified",
+      "revision": "0a5828f800a36df0fd7f0ed581b983246c0677ff",
+      "model_type": "llama"
+    },
+    {
+      "id": "deepseek-ai/deepseek-math-7b-rl",
+      "family": "DeepSeek",
+      "role": "unspecified",
+      "revision": "f3cd419a172ff5a100e9a563ebfe7900d78e9740",
+      "model_type": "llama"
+    },
+    {
+      "id": "openlm-research/open_llama_3b",
+      "family": "OpenLLaMA",
+      "role": "unspecified",
+      "revision": "141067009124b9c0aea62c76b3eb952174864057",
+      "model_type": "llama"
+    },
+    {
+      "id": "openlm-research/open_llama_3b_v2",
+      "family": "OpenLLaMA",
+      "role": "unspecified",
+      "revision": "bce5d60d3b0c68318862270ec4e794d83308d80a",
+      "model_type": "llama"
+    },
+    {
+      "id": "openlm-research/open_llama_7b_v2",
+      "family": "OpenLLaMA",
+      "role": "unspecified",
+      "revision": "e5961def23172a2384543940e773ab676033c963",
+      "model_type": "llama"
+    },
+    {
+      "id": "lmsys/vicuna-7b-v1.3",
+      "family": "Llama1",
+      "role": "unspecified",
+      "revision": "236eeeab96f0dc2e463f2bebb7bb49809279c6d6",
+      "model_type": "llama"
+    },
+    {
+      "id": "lmsys/vicuna-7b-v1.5",
+      "family": "Llama2",
+      "role": "unspecified",
+      "revision": "3321f76e3f527bd14065daf69dad9344000a201d",
+      "model_type": "llama"
+    },
+    {
+      "id": "Open-Orca/Mistral-7B-OpenOrca",
+      "family": "Mistral",
+      "role": "unspecified",
+      "revision": "4a37328cef00f524d3791b1c0cc559a3cc6af14d",
+      "model_type": "mistral"
+    }
+  ],
+  "smoke_models": [
+    1,
+    15,
+    34
+  ],
+  "seed": 20261022
+}

@@ -19,3 +19,4 @@ checkpoints/
 *.npz
 *.npy
 *.log
+experiments/100models/official_likelihood.py

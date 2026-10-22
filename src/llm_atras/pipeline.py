@@ -153,6 +153,8 @@ def extract(stage, idx):
     torch.set_num_threads(4)
     torch.manual_seed(20261022)
     entry = json.loads((ROOT/'models.json').read_text())[idx]
+    config = json.loads((ROOT/'config.json').read_text())
+    capture_reference = config.get('capture_reference_likelihood', False)
     rows = json.loads((ROOT/f'texts_{stage}.json').read_text())
     dest = ROOT/stage/'features'/slug(entry['id'])
     dest.mkdir(parents=True, exist_ok=True)
@@ -162,17 +164,21 @@ def extract(stage, idx):
     start = time.time()
     tok = AutoTokenizer.from_pretrained(entry['snapshot'], local_files_only=True)
     model = AutoModelForCausalLM.from_pretrained(entry['snapshot'],
-        local_files_only=True, dtype=torch.bfloat16, attn_implementation='eager').to('cuda').eval()
+        local_files_only=True, dtype=getattr(torch, config.get('dtype', 'bfloat16')),
+        attn_implementation='eager').to('cuda').eval()
     model.config.use_cache = False
-    eta, hidden, ll, ess, lengths = [], [], [], [], []
+    eta, hidden, ll, ess, lengths, ll_reference = [], [], [], [], [], []
     raw = dest/'raw'
     raw.mkdir(exist_ok=True)
     for a, row in enumerate(rows):
         rp = raw/f'{a:03d}.npz'
         if rp.exists():
             d = np.load(rp)
+            if capture_reference and 'll_reference' not in d:
+                raise ValueError('Cached extraction lacks reference likelihood: ' + str(rp))
             eta.append(d['eta']); hidden.append(d['hidden']); ll.append(float(d['ll']))
             ess.append(float(d['ess'])); lengths.append(int(d['length']))
+            if capture_reference: ll_reference.append(float(d['ll_reference']))
             continue
         ids = tok.encode(row['text'], add_special_tokens=False)
         bos = tok.bos_token_id if tok.bos_token_id is not None else tok.eos_token_id
@@ -184,10 +190,26 @@ def extract(stage, idx):
             h = out.hidden_states[-1][0, -1].float().cpu().numpy()
             loss = F.cross_entropy(out.logits[0, :-1].float(), ids[0, 1:], reduction='sum')
             l = -float(loss)
+            extra = {}
+            if capture_reference:
+                # Follow the official calculator's default tokenizer special tokens.
+                ref_ids = tok.encode(row['text'], add_special_tokens=True)
+                assert 2 <= len(ref_ids) <= 512
+                ref_ids = torch.tensor([ref_ids], device='cuda')
+                ref_out = out if torch.equal(ids, ref_ids) else model(
+                    input_ids=ref_ids, output_hidden_states=False, output_attentions=False)
+                # Official code applies log_softmax in the model's float16 dtype,
+                # then sums Python floats. Accumulate the gathered values in float64.
+                logp = ref_out.logits[0, :-1].log_softmax(-1)
+                ref_ll = float(logp.gather(1, ref_ids[0, 1:, None]).double().sum())
+                assert np.isfinite(ref_ll)
+                extra['ll_reference'] = ref_ll
+                ll_reference.append(ref_ll)
+                del ref_out, ref_ids, logp
             es = float(1/(w.square().sum()))
             assert np.isfinite(e).all() and np.isfinite(h).all() and np.isfinite(l)
             np.savez_compressed(rp, V=V.cpu().numpy(), w=w.cpu().numpy(), eta=e,
-                                hidden=h, ll=l, ess=es, length=ids.shape[1])
+                                hidden=h, ll=l, ess=es, length=ids.shape[1], **extra)
             eta.append(e); hidden.append(h); ll.append(l); ess.append(es); lengths.append(ids.shape[1])
             del V, w, out, loss
         if (a+1) % 10 == 0:
@@ -212,10 +234,14 @@ def extract(stage, idx):
         assert np.allclose(G,G.T,atol=1e-8)
         cov.append(C); metrics.append(G); eigmin.append(float(np.linalg.eigvalsh(G)[0]))
         conditions.append(float(np.linalg.cond(C+reg*np.eye(16)))); regs.append(reg)
+    extra_features = {'ll_reference': ll_reference} if capture_reference else {}
     np.savez_compressed(dest/'features.npz', eta=eta, hidden=hidden, coords=coords,
         covariance=cov, metric=metrics, ll=ll, ess=ess, lengths=lengths,
-        pca_projection=P, pca_mean=pca.mean_, pca_evr=pca.explained_variance_ratio_, regularization=regs)
+        pca_projection=P, pca_mean=pca.mean_, pca_evr=pca.explained_variance_ratio_, regularization=regs,
+        **extra_features)
     dump(dest/'complete.json', dict(**entry,n=len(rows), seconds=time.time()-start,
+        torch_version=torch.__version__, dtype=config.get('dtype', 'bfloat16'),
+        reference_likelihood=capture_reference,
         min_metric_eigenvalue=min(eigmin), max_covariance_condition=max(conditions),
         ess_min=min(ess),ess_median=float(np.median(ess)), pca_evr=float(pca.explained_variance_ratio_.sum())))
     print('EXTRACT_COMPLETE', stage, entry['label'], flush=True)
@@ -244,6 +270,14 @@ def make_distances(features, graphs, include_gw=True):
        'hidden_cka':cka_distance([f['hidden'] for f in features]),
        'eta_cka':cka_distance([f['eta'] for f in features]),
        'eta_knn':knn_distance([cdist(f['eta'],f['eta']) for f in features])}
+    if all('ll_reference' in f for f in features):
+        from .shimodaira import likelihood_coordinates
+        reference = np.array([f['ll_reference'] for f in features])
+        for clipping in [False, True]:
+            L, Q, threshold = likelihood_coordinates(reference, clip=clipping)
+            suffix = 'clipped' if clipping else 'raw'
+            D['shimodaira_L_' + suffix] = pairwise_from_features(L)/np.sqrt(L.shape[1])
+            D['shimodaira_Q_' + suffix] = pairwise_from_features(Q)/np.sqrt(Q.shape[1])
     for weight in ['euclidean','fisher']:
         ss=[g[weight]['S'] for g in graphs]
         ns=[normalize(s) for s in ss]
@@ -254,6 +288,16 @@ def make_distances(features, graphs, include_gw=True):
         D[weight+'_netlsd']=pairwise_from_features([netlsd_vector(g[weight]) for g in graphs])
         if include_gw:
             import ot
+            cached = CURRENT_OUT / f'gw_solver_{weight}.json'
+            if cached.exists():
+                diagnostics = json.loads(cached.read_text())
+                if len(diagnostics) == len(ss)*(len(ss)-1)//2:
+                    out=np.zeros((len(ss),len(ss)))
+                    for row in diagnostics:
+                        i,j=row['i'],row['j']
+                        out[i,j]=out[j,i]=np.sqrt(max(0,(row['forward']+row['reverse'])/2))
+                    D[weight+'_gw_approx']=out
+                    continue
             out=np.zeros((len(ss),len(ss)))
             diagnostics=[]
             p=np.ones(len(ss[0]))/len(ss[0])
@@ -293,7 +337,8 @@ def plot_points(ax,Y,labels,categories,title,edges=None,text=False):
         ax.scatter(Y[ix,0],Y[ix,1],s=18 if edges is not None else 48,
                    color=palette(c),label=cat,marker=['o','s','^','D','v'][c%5],edgecolors='white',linewidths=.3)
     if text:
-        annotations=[ax.text(x,y,row,fontsize=7) for row,(x,y) in zip(labels,Y)]
+        display_labels=[f'{i+1:03d}' for i in range(len(labels))] if len(labels)>=50 else labels
+        annotations=[ax.text(x,y,row,fontsize=7) for row,(x,y) in zip(display_labels,Y)]
         from adjustText import adjust_text
         adjust_text(annotations,x=Y[:,0],y=Y[:,1],ax=ax,
                     arrowprops=dict(arrowstyle='-',color='#6b7280',lw=.5),iter_lim=80)
@@ -325,6 +370,19 @@ def analyze(stage, quick=False):
         models=entries,text_ids=[r['id'] for r in texts],text_hashes=[r['sha256'] for r in texts]))
     for folder in ['graphs','distances','maps','heatmaps','csv','evaluation']:(out/folder).mkdir(exist_ok=True)
     features=[dict(np.load(ROOT/stage/'features'/slug(e['id'])/'features.npz')) for e in entries]
+    if all('ll_reference' in f for f in features):
+        from .shimodaira import likelihood_coordinates
+        likelihood = np.array([f['ll_reference'] for f in features])
+        reference_provenance = {}
+        for clipped in [False, True]:
+            L, Q, threshold = likelihood_coordinates(likelihood, clip=clipped)
+            suffix = 'clipped' if clipped else 'raw'
+            np.savez_compressed(out/'distances'/f'shimodaira_features_{suffix}.npz', L=L, Q=Q)
+            qdist = pairwise_from_features(Q)/np.sqrt(Q.shape[1])
+            np.save(out/'distances'/f'shimodaira_KL_approx_{suffix}.npy', qdist**2/2)
+            reference_provenance[suffix] = dict(global_clip_threshold=threshold,
+                fraction_clipped=float(np.mean(likelihood < threshold)) if threshold is not None else 0)
+        dump(out/'shimodaira_provenance.json', reference_provenance)
     # Same global k across all models and both edge-weight conditions.
     requested=min(20,len(texts)-1); chosen=None; connectivity=[]
     for k in range(requested,len(texts)):
@@ -371,12 +429,17 @@ def analyze(stage, quick=False):
         ax.set_xlim(-limit,limit);ax.set_ylim(-limit,limit);ax.set_aspect('equal',adjustable='box')
         ax.legend(fontsize=6,ncol=3,loc='upper center',bbox_to_anchor=(.5,-.12))
         fig.savefig(out/'graphs'/f'{slug(e["id"])}_{w}.png',bbox_inches='tight');plt.close(fig)
-    fig,axes=plt.subplots(len(entries),2,figsize=(12,4*len(entries)),squeeze=False)
-    for ax,(e,w,Z,a,b) in zip(axes.flat,panels):
-        plot_points(ax,Z,[],cats,e['label']+' | '+w,(a,b));ax.set_xlim(-limit,limit);ax.set_ylim(-limit,limit)
-        ax.set_aspect('equal',adjustable='box')
-    assert len(fig.axes)==2*len(entries)
-    fig.tight_layout();fig.savefig(out/'graphs/all_models_aligned.png');plt.close(fig)
+    page_size=10 if len(entries)>20 else len(entries)
+    for start in range(0,len(entries),page_size):
+        subset=panels[2*start:2*(start+page_size)]
+        fig,axes=plt.subplots(len(subset)//2,2,figsize=(12,4*(len(subset)//2)),squeeze=False)
+        for ax,(e,w,Z,a,b) in zip(axes.flat,subset):
+            plot_points(ax,Z,[],cats,e['label']+' | '+w,(a,b));ax.set_xlim(-limit,limit);ax.set_ylim(-limit,limit)
+            ax.set_aspect('equal',adjustable='box')
+        filename='all_models_aligned'+(f'_page{start//page_size+1:02d}' if len(entries)>20 else '')+'.png'
+        fig.tight_layout();fig.savefig(out/'graphs'/filename);plt.close(fig)
+    table(out/'evaluation/model_key.csv',[dict(number=i+1,id=e['id'],label=e['label'],
+        family=e['family'],revision=e['revision']) for i,e in enumerate(entries)])
     D=make_distances(features,graphs,include_gw=not quick)
     # Length-normalized likelihood is a sensitivity control, not the KL proxy.
     perbyte=np.array([f['ll'] for f in features])/np.array([r['bytes'] for r in texts])[None,:]
@@ -390,14 +453,18 @@ def analyze(stage, quick=False):
         np.save(out/'distances'/f'{method}.npy',d)
         table(out/'distances'/f'{method}.csv',[dict(model=e['id'],**{q['id']:float(v) for q,v in zip(entries,row)}) for e,row in zip(entries,d)])
         audits.append(dict(method=method,**metric_audit(d)))
-        fig,ax=plt.subplots(figsize=(10,8));im=ax.imshow(d,cmap='viridis')
-        ax.set_xticks(range(len(names)),names,rotation=55,ha='right',fontsize=7)
-        ax.set_yticks(range(len(names)),names,fontsize=7);ax.set_title(method);fig.colorbar(im,ax=ax,label='Model dissimilarity')
+        ticks=[f'{i+1:03d}' for i in range(len(names))] if len(names)>=50 else names
+        fig,ax=plt.subplots(figsize=(14,12) if len(names)>=50 else (10,8));im=ax.imshow(d,cmap='viridis')
+        ax.set_xticks(range(len(names)),ticks,rotation=55,ha='right',fontsize=5 if len(names)>=50 else 7)
+        ax.set_yticks(range(len(names)),ticks,fontsize=5 if len(names)>=50 else 7);ax.set_title(method);fig.colorbar(im,ax=ax,label='Model dissimilarity')
         fig.tight_layout();fig.savefig(out/'heatmaps'/f'{method}.png');plt.close(fig)
         dnorm=d/upper(d).mean()
         seeds=[0] if stage=='smoke' else list(range(10))
         reductions=[('mds',None)]
         if stage=='main': reductions += [('isomap',3),('isomap',5),('umap',3),('umap',5),('umap',10)]
+        if stage=='main' and len(entries)>=50:
+            reductions=[('mds',None),('isomap',10),('isomap',30),
+                        ('umap',5),('umap',15),('umap',30),('tsne',30)]
         for reducer,nneighbors in reductions:
             for seed in (seeds if reducer!='isomap' else [0]):
                 if reducer=='mds':
@@ -412,6 +479,10 @@ def analyze(stage, quick=False):
                     if nc>1:
                         metrics.append(dict(method=method,reducer=reducer,neighbors=nneighbors,seed=seed,status='disconnected',components=nc));continue
                     Y=Isomap(n_neighbors=nneighbors,n_components=2,metric='precomputed').fit_transform(dnorm)
+                elif reducer=='tsne':
+                    from sklearn.manifold import TSNE
+                    Y=TSNE(n_components=2,metric='precomputed',init='random',
+                        perplexity=nneighbors,random_state=seed,learning_rate='auto').fit_transform(dnorm)
                 else:
                     import umap
                     Y=umap.UMAP(n_components=2,metric='precomputed',n_neighbors=nneighbors,min_dist=.1,random_state=seed,n_jobs=1).fit_transform(dnorm)
@@ -425,6 +496,25 @@ def analyze(stage, quick=False):
                     fig,ax=plt.subplots(figsize=(11,8));plot_points(ax,Z,names,families,tag,text=True)
                     ax.legend(loc='best',fontsize=8);fig.tight_layout();fig.savefig(out/'maps'/f'{tag}.png');plt.close(fig)
         print('MAP_COMPLETE',stage,method,flush=True)
+    # Paper Figure 1 embeds clipped L (not Q), using feature-space t-SNE.
+    # Preserve that setting separately from the common-distance reducer study.
+    if stage=='main' and all('ll_reference' in f for f in features):
+        from sklearn.manifold import TSNE
+        from .shimodaira import likelihood_coordinates
+        L, Q, _ = likelihood_coordinates(np.array([f['ll_reference'] for f in features]))
+        for label, X in [('L',L),('Q',Q)]:
+            d=pairwise_from_features(X);dnorm=d/upper(d).mean()
+            for seed in range(10):
+                Y=TSNE(n_components=2,init='pca',perplexity=min(30,len(entries)-1),
+                    random_state=seed,learning_rate='auto').fit_transform(X)
+                tag=f'paper_features_{label}_tsne_seed{seed}'
+                np.save(out/'maps'/f'{tag}.npy',Y)
+                table(out/'csv'/f'{tag}.csv',[dict(id=e['id'],label=e['label'],family=e['family'],x=float(z[0]),y=float(z[1])) for e,z in zip(entries,Y)])
+                metrics.append(dict(method='paper_features_'+label,reducer='tsne_pca_init',
+                    neighbors=min(30,len(entries)-1),seed=seed,status='ok',**assess(dnorm,Y)))
+                if seed==0:
+                    fig,ax=plt.subplots(figsize=(14,10));plot_points(ax,Y,names,families,tag,text=True)
+                    ax.legend(fontsize=7);fig.tight_layout();fig.savefig(out/'maps'/f'{tag}.png');plt.close(fig)
     table(out/'evaluation/reductions.csv',metrics)
     table(out/'evaluation/metric_axioms.csv',audits)
     relations=[]
@@ -441,6 +531,12 @@ def analyze(stage, quick=False):
     # Stratified subsampling without replacement: induced-submatrix stability,
     # not a claim to refit PCA or reconstruct kNN graphs on each replicate.
     rng=np.random.default_rng(20261022);stability=[]
+    reference_subsample_features = {}
+    if all('ll_reference' in f for f in features):
+        from .shimodaira import likelihood_coordinates
+        for clipped in [False, True]:
+            L, _, _ = likelihood_coordinates(np.array([f['ll_reference'] for f in features]),clip=clipped)
+            reference_subsample_features['shimodaira_Q_'+('clipped' if clipped else 'raw')] = L
     for rep in range(100 if stage=='main' else 10):
         ids=np.sort(np.concatenate([rng.choice(np.flatnonzero(np.array(cats)==c),max(1,int(.8*cats.count(c))),replace=False) for c in sorted(set(cats))]))
         for weight in ['euclidean','fisher']:
@@ -448,6 +544,11 @@ def analyze(stage, quick=False):
             dd=pairwise_from_features([upper(s) for s in ss])/np.sqrt(len(upper(ss[0])))
             rho=float(spearmanr(upper(D[weight+'_frob']),upper(dd)).statistic)
             stability.append(dict(replicate=rep,method=weight+'_frob',n=len(ids),spearman=rho))
+        for method,L in reference_subsample_features.items():
+            X=L[:,ids];X=X-X.mean(1,keepdims=True)
+            dd=pairwise_from_features(X)/np.sqrt(len(ids))
+            stability.append(dict(replicate=rep,method=method,n=len(ids),
+                spearman=float(spearmanr(upper(D[method]),upper(dd)).statistic)))
     table(out/'evaluation/induced_submatrix_stability.csv',stability)
     if stage=='main':
         rebuilt=[]
@@ -466,6 +567,15 @@ def analyze(stage, quick=False):
                 overlap=float(np.mean([len(set(a)&set(b))/3 for a,b in zip(ia,ib)]))
                 rebuilt.append(dict(replicate=rep,method=weight+'_frob',n=len(ids),k=kk,spearman=rho,model_knn_overlap=overlap,
                     protocol='stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed'))
+            for method,L in reference_subsample_features.items():
+                X=L[:,ids];X=X-X.mean(1,keepdims=True)
+                dd=pairwise_from_features(X)/np.sqrt(len(ids))
+                aa=D[method].copy();bb=dd.copy();np.fill_diagonal(aa,np.inf);np.fill_diagonal(bb,np.inf)
+                ia=np.argsort(aa,axis=1)[:,:3];ib=np.argsort(bb,axis=1)[:,:3]
+                rebuilt.append(dict(replicate=rep,method=method,n=len(ids),k=None,
+                    spearman=float(spearmanr(upper(D[method]),upper(dd)).statistic),
+                    model_knn_overlap=float(np.mean([len(set(a)&set(b))/3 for a,b in zip(ia,ib)])),
+                    protocol='same stratified subsample; recenter likelihood; global clipping threshold fixed'))
         table(out/'evaluation/rebuilt_graph_stability.csv',rebuilt)
     # One map per graph comparison in a single review image.
     selected=[m for m in D if m.startswith('fisher_') or m.startswith('euclidean_')]
