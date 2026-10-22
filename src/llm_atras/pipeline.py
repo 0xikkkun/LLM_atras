@@ -162,8 +162,16 @@ def extract(stage, idx):
         print('SKIP COMPLETE', stage, entry['id'], flush=True)
         return
     start = time.time()
-    tok = AutoTokenizer.from_pretrained(entry['snapshot'], local_files_only=True)
-    model = AutoModelForCausalLM.from_pretrained(entry['snapshot'],
+    load_path = entry['snapshot']
+    staged_path = None
+    if config.get('local_stage_dir'):
+        from .staging import stage_snapshot
+        print('STAGING', entry['id'], flush=True)
+        staged_path = stage_snapshot(load_path, config['local_stage_dir'], entry['id'])
+        load_path = str(staged_path)
+        print('STAGED', entry['id'], flush=True)
+    tok = AutoTokenizer.from_pretrained(load_path, local_files_only=True)
+    model = AutoModelForCausalLM.from_pretrained(load_path,
         local_files_only=True, dtype=getattr(torch, config.get('dtype', 'bfloat16')),
         attn_implementation='eager').to('cuda').eval()
     model.config.use_cache = False
@@ -245,6 +253,9 @@ def extract(stage, idx):
         min_metric_eigenvalue=min(eigmin), max_covariance_condition=max(conditions),
         ess_min=min(ess),ess_median=float(np.median(ess)), pca_evr=float(pca.explained_variance_ratio_.sum())))
     print('EXTRACT_COMPLETE', stage, entry['label'], flush=True)
+    if staged_path is not None:
+        import shutil
+        shutil.rmtree(staged_path)
 
 
 
