@@ -1,0 +1,81 @@
+replicate,method,n,k,spearman,model_knn_overlap,protocol
+0,euclidean_frob,240,20,0.9945650374335905,0.9033333333333334,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+0,fisher_frob,240,20,0.986304060585078,0.83,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+0,shimodaira_Q_raw,240,,0.9927526181197791,0.9266666666666665,same stratified subsample; recenter likelihood; global clipping threshold fixed
+0,shimodaira_Q_clipped,240,,0.9964839140643892,0.9100000000000001,same stratified subsample; recenter likelihood; global clipping threshold fixed
+1,euclidean_frob,240,20,0.9956209057894398,0.9000000000000001,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+1,fisher_frob,240,20,0.9943646395191993,0.8766666666666667,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+1,shimodaira_Q_raw,240,,0.998809558456577,0.95,same stratified subsample; recenter likelihood; global clipping threshold fixed
+1,shimodaira_Q_clipped,240,,0.9987485370988137,0.9433333333333332,same stratified subsample; recenter likelihood; global clipping threshold fixed
+2,euclidean_frob,240,20,0.9940486993517754,0.8633333333333336,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+2,fisher_frob,240,20,0.9927461919601577,0.8633333333333333,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+2,shimodaira_Q_raw,240,,0.9993210683357544,0.9600000000000002,same stratified subsample; recenter likelihood; global clipping threshold fixed
+2,shimodaira_Q_clipped,240,,0.9993109662121821,0.9633333333333333,same stratified subsample; recenter likelihood; global clipping threshold fixed
+3,euclidean_frob,240,20,0.9958013643152613,0.9066666666666667,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+3,fisher_frob,240,20,0.992946657647475,0.8766666666666667,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+3,shimodaira_Q_raw,240,,0.9992340151496258,0.95,same stratified subsample; recenter likelihood; global clipping threshold fixed
+3,shimodaira_Q_clipped,240,,0.9992565440576142,0.9266666666666667,same stratified subsample; recenter likelihood; global clipping threshold fixed
+4,euclidean_frob,240,20,0.9946337554212635,0.86,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+4,fisher_frob,240,20,0.9923739606884152,0.8633333333333334,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+4,shimodaira_Q_raw,240,,0.9993475973304772,0.9366666666666668,same stratified subsample; recenter likelihood; global clipping threshold fixed
+4,shimodaira_Q_clipped,240,,0.9992731087502047,0.9533333333333335,same stratified subsample; recenter likelihood; global clipping threshold fixed
+5,euclidean_frob,240,20,0.994680147918666,0.9,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+5,fisher_frob,240,20,0.9824397181741017,0.8666666666666667,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+5,shimodaira_Q_raw,240,,0.998837721224049,0.9266666666666665,same stratified subsample; recenter likelihood; global clipping threshold fixed
+5,shimodaira_Q_clipped,240,,0.9987090598144268,0.9166666666666665,same stratified subsample; recenter likelihood; global clipping threshold fixed
+6,euclidean_frob,240,20,0.9947461845719192,0.8966666666666668,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+6,fisher_frob,240,20,0.9920856201300737,0.8366666666666667,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+6,shimodaira_Q_raw,240,,0.9991075840134435,0.9466666666666665,same stratified subsample; recenter likelihood; global clipping threshold fixed
+6,shimodaira_Q_clipped,240,,0.9991778573155727,0.93,same stratified subsample; recenter likelihood; global clipping threshold fixed
+7,euclidean_frob,240,20,0.9957797267449281,0.9100000000000001,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+7,fisher_frob,240,20,0.9908627376161001,0.8666666666666667,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+7,shimodaira_Q_raw,240,,0.9993455079455734,0.9466666666666668,same stratified subsample; recenter likelihood; global clipping threshold fixed
+7,shimodaira_Q_clipped,240,,0.9992821143375099,0.9666666666666666,same stratified subsample; recenter likelihood; global clipping threshold fixed
+8,euclidean_frob,240,20,0.9926054515352233,0.8566666666666667,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+8,fisher_frob,240,20,0.9902874948684731,0.8366666666666667,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+8,shimodaira_Q_raw,240,,0.9941337674342621,0.9366666666666668,same stratified subsample; recenter likelihood; global clipping threshold fixed
+8,shimodaira_Q_clipped,240,,0.9981470015228512,0.9533333333333335,same stratified subsample; recenter likelihood; global clipping threshold fixed
+9,euclidean_frob,240,20,0.9938492194884555,0.89,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+9,fisher_frob,240,20,0.9929143582580302,0.8766666666666667,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+9,shimodaira_Q_raw,240,,0.9985760292771718,0.9566666666666667,same stratified subsample; recenter likelihood; global clipping threshold fixed
+9,shimodaira_Q_clipped,240,,0.9984742671893724,0.9466666666666669,same stratified subsample; recenter likelihood; global clipping threshold fixed
+10,euclidean_frob,240,20,0.9918456047353297,0.8866666666666667,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+10,fisher_frob,240,20,0.9898719988446149,0.8733333333333333,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+10,shimodaira_Q_raw,240,,0.99477296081415,0.97,same stratified subsample; recenter likelihood; global clipping threshold fixed
+10,shimodaira_Q_clipped,240,,0.9989866132974162,0.9766666666666666,same stratified subsample; recenter likelihood; global clipping threshold fixed
+11,euclidean_frob,240,20,0.996040879377613,0.9466666666666668,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+11,fisher_frob,240,20,0.9926245263984926,0.8800000000000001,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+11,shimodaira_Q_raw,240,,0.9990688017725715,0.9333333333333335,same stratified subsample; recenter likelihood; global clipping threshold fixed
+11,shimodaira_Q_clipped,240,,0.999106273868785,0.9400000000000002,same stratified subsample; recenter likelihood; global clipping threshold fixed
+12,euclidean_frob,240,20,0.9954539478284283,0.8866666666666667,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+12,fisher_frob,240,20,0.9852792843701369,0.86,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+12,shimodaira_Q_raw,240,,0.9945766854724538,0.97,same stratified subsample; recenter likelihood; global clipping threshold fixed
+12,shimodaira_Q_clipped,240,,0.9988884099313519,0.96,same stratified subsample; recenter likelihood; global clipping threshold fixed
+13,euclidean_frob,240,20,0.9928659754132412,0.9,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+13,fisher_frob,240,20,0.9922817443925603,0.8700000000000001,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+13,shimodaira_Q_raw,240,,0.9987283321590991,0.94,same stratified subsample; recenter likelihood; global clipping threshold fixed
+13,shimodaira_Q_clipped,240,,0.9986593723655398,0.9433333333333332,same stratified subsample; recenter likelihood; global clipping threshold fixed
+14,euclidean_frob,240,20,0.9964026947915505,0.8966666666666667,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+14,fisher_frob,240,20,0.9941472851154461,0.8833333333333334,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+14,shimodaira_Q_raw,240,,0.9944447194153666,0.9466666666666669,same stratified subsample; recenter likelihood; global clipping threshold fixed
+14,shimodaira_Q_clipped,240,,0.9987952924039841,0.94,same stratified subsample; recenter likelihood; global clipping threshold fixed
+15,euclidean_frob,240,20,0.9957311470123675,0.8866666666666667,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+15,fisher_frob,240,20,0.9930016408827225,0.8533333333333334,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+15,shimodaira_Q_raw,240,,0.9991925531573514,0.9733333333333333,same stratified subsample; recenter likelihood; global clipping threshold fixed
+15,shimodaira_Q_clipped,240,,0.9992068129768139,0.9566666666666666,same stratified subsample; recenter likelihood; global clipping threshold fixed
+16,euclidean_frob,240,20,0.9952132983363339,0.9066666666666667,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+16,fisher_frob,240,20,0.9860254511306388,0.8500000000000001,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+16,shimodaira_Q_raw,240,,0.9884679944216499,0.9366666666666668,same stratified subsample; recenter likelihood; global clipping threshold fixed
+16,shimodaira_Q_clipped,240,,0.9955509156495226,0.9266666666666667,same stratified subsample; recenter likelihood; global clipping threshold fixed
+17,euclidean_frob,240,20,0.9922180898834649,0.8966666666666666,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+17,fisher_frob,240,20,0.9931408138237553,0.83,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+17,shimodaira_Q_raw,240,,0.9991984654299954,0.9333333333333335,same stratified subsample; recenter likelihood; global clipping threshold fixed
+17,shimodaira_Q_clipped,240,,0.9992051541726044,0.9466666666666669,same stratified subsample; recenter likelihood; global clipping threshold fixed
+18,euclidean_frob,240,20,0.9950047740028475,0.91,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+18,fisher_frob,240,20,0.9926746971623364,0.87,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+18,shimodaira_Q_raw,240,,0.999057852042196,0.96,same stratified subsample; recenter likelihood; global clipping threshold fixed
+18,shimodaira_Q_clipped,240,,0.9988768559830766,0.95,same stratified subsample; recenter likelihood; global clipping threshold fixed
+19,euclidean_frob,240,20,0.9953875943738462,0.8833333333333334,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+19,fisher_frob,240,20,0.9911797330624037,0.8633333333333334,stratified subsample; rebuild kNN and shortest paths; PCA and local metrics fixed
+19,shimodaira_Q_raw,240,,0.9993187340778685,0.9433333333333335,same stratified subsample; recenter likelihood; global clipping threshold fixed
+19,shimodaira_Q_clipped,240,,0.9993013957845315,0.9533333333333335,same stratified subsample; recenter likelihood; global clipping threshold fixed

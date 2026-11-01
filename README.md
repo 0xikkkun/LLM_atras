@@ -1,4 +1,8 @@
-# LLM_atras
+# LLM Atlas
+
+[研究議論・ゼミのフィードバック・次の実験方針（2026-11-01）](docs/research/discussion_20261101.md)
+
+表示名はAtlasに統一します。リポジトリ名・Pythonパッケージ名・CLI名は互換性のため従来のままです。
 
 100モデルでのShimodairaらの尤度法とグラフ法の対照実験については、
 [実験プロトコル](experiments/100models/PROTOCOL.md)と
